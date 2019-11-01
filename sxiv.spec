@@ -4,13 +4,16 @@
 #
 Name     : sxiv
 Version  : 25
-Release  : 1
+Release  : 2
 URL      : https://github.com/muennich/sxiv/archive/v25.tar.gz
 Source0  : https://github.com/muennich/sxiv/archive/v25.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: sxiv-bin = %{version}-%{release}
+Requires: sxiv-data = %{version}-%{release}
 Requires: sxiv-license = %{version}-%{release}
+Requires: sxiv-man = %{version}-%{release}
 BuildRequires : giflib-dev
 BuildRequires : pkgconfig(imlib2)
 BuildRequires : pkgconfig(libexif)
@@ -22,12 +25,38 @@ BuildRequires : util-linux
 ![sxiv](http://muennich.github.com/sxiv/img/logo.png "sxiv")
 **Simple X Image Viewer**
 
+%package bin
+Summary: bin components for the sxiv package.
+Group: Binaries
+Requires: sxiv-data = %{version}-%{release}
+Requires: sxiv-license = %{version}-%{release}
+
+%description bin
+bin components for the sxiv package.
+
+
+%package data
+Summary: data components for the sxiv package.
+Group: Data
+
+%description data
+data components for the sxiv package.
+
+
 %package license
 Summary: license components for the sxiv package.
 Group: Default
 
 %description license
 license components for the sxiv package.
+
+
+%package man
+Summary: man components for the sxiv package.
+Group: Default
+
+%description man
+man components for the sxiv package.
 
 
 %prep
@@ -38,7 +67,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572648817
+export SOURCE_DATE_EPOCH=1572650960
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -51,15 +80,28 @@ make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1572648817
+export SOURCE_DATE_EPOCH=1572650960
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/sxiv
 cp %{_builddir}/sxiv-25/LICENSE %{buildroot}/usr/share/package-licenses/sxiv/4cc77b90af91e615a64ae04893fdffa7939db84c
-%make_install
+%make_install PREFIX=/usr
 
 %files
 %defattr(-,root,root,-)
 
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/sxiv
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/sxiv/exec/image-info
+/usr/share/sxiv/exec/key-handler
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/sxiv/4cc77b90af91e615a64ae04893fdffa7939db84c
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/sxiv.1
