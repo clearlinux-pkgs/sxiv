@@ -1,5 +1,4 @@
-25
+26
 giflib-dev
 pkgconfig(x11)
 pkgconfig(xft)
-util-linux
